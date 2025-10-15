@@ -5,9 +5,15 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 
+
 A production-ready application that uses multi-agent AI architecture to intelligently analyze and tailor resumes to specific job descriptions. Get instant match scores, keyword analysis, and AI-optimized resumes that pass ATS (Applicant Tracking Systems).
 
 Preview : <img width="1919" height="826" alt="image" src="https://github.com/user-attachments/assets/9b1a8b8d-6888-43f8-927e-c5579ae907d8" />
+<img width="1898" height="824" alt="image" src="https://github.com/user-attachments/assets/225b3f56-e41a-4a59-8352-27de3364dd0a" />
+<img width="1888" height="723" alt="image" src="https://github.com/user-attachments/assets/63c04f9d-fa16-4584-bed3-2f5a18f393c6" />
+<img width="1918" height="828" alt="image" src="https://github.com/user-attachments/assets/7bbc4488-e1a2-4097-8e51-4d012b78aa2d" />
+
+
 
 ## ✨ Key Features
 
