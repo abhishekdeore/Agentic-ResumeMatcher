@@ -1,6 +1,6 @@
 # 🎯 Agentic Resume Matcher
 
-> **AI-Powered Resume Analysis & Tailoring System** using Multi-Agent Architecture
+> **AI-Powered Resume Analysis & Tailoring System** using Custom Multi-Agent Architecture
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
@@ -148,7 +148,8 @@ python -m src.cli tailor \
 ### Technology Stack
 
 - **Backend**: Python 3.9+, FastAPI, Pydantic
-- **AI**: OpenAI GPT-4o-mini / AWS Bedrock Claude 3.5 Sonnet
+- **AI/LLM**: OpenAI GPT-4o-mini / AWS Bedrock Claude 3.5 Sonnet
+- **Agent Architecture**: Custom multi-agent system (not using external frameworks)
 - **Frontend**: Vanilla JavaScript, Modern CSS
 - **File Processing**: PyPDF2, python-docx, ReportLab
 - **CLI**: Click, Rich
@@ -316,11 +317,12 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ## 🙏 Acknowledgments
 
 Built with:
-- [OpenAI GPT-4](https://openai.com/) / [Anthropic Claude](https://anthropic.com/)
-- [FastAPI](https://fastapi.tiangolo.com/)
-- [Pydantic](https://pydantic-docs.helpmanual.io/)
-- [Rich](https://rich.readthedocs.io/)
-- [Click](https://click.palletsprojects.com/)
+- [OpenAI GPT-4o-mini](https://openai.com/) / [AWS Bedrock Claude 3.5 Sonnet](https://aws.amazon.com/bedrock/)
+- [FastAPI](https://fastapi.tiangolo.com/) - Modern web framework
+- [Pydantic](https://pydantic-docs.helpmanual.io/) - Data validation
+- [Rich](https://rich.readthedocs.io/) - Beautiful terminal output
+- [Click](https://click.palletsprojects.com/) - CLI framework
+- Custom agent architecture (no external agent frameworks)
 
 ## 📞 Support
 
