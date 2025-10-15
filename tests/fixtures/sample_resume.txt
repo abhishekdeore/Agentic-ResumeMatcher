@@ -1,0 +1,66 @@
+JOHN DOE
+Software Engineer
+Email: john.doe@example.com | Phone: (555) 123-4567
+LinkedIn: linkedin.com/in/johndoe | GitHub: github.com/johndoe
+Location: San Francisco, CA
+
+PROFESSIONAL SUMMARY
+Passionate software engineer with 6 years of experience building scalable web applications and cloud infrastructure. Proficient in Python, JavaScript, and modern DevOps practices. Proven track record of delivering high-quality solutions and improving system reliability.
+
+WORK EXPERIENCE
+
+Software Engineer | CloudTech Solutions | San Francisco, CA | 2020 - Present
+- Developed and maintained Python-based microservices handling 1M+ requests per day
+- Implemented automated deployment pipelines using Jenkins and Docker, reducing deployment time by 60%
+- Managed AWS infrastructure including EC2, S3, and RDS instances
+- Collaborated with product team to deliver 15+ features on schedule
+- Participated in code reviews and mentored 2 junior developers
+- Improved application performance by 40% through optimization and caching strategies
+
+Backend Developer | StartupXYZ | San Francisco, CA | 2018 - 2020
+- Built RESTful APIs using Python Flask framework
+- Designed and implemented PostgreSQL database schemas
+- Wrote comprehensive unit tests achieving 85% code coverage
+- Worked closely with frontend team to integrate APIs
+- Participated in daily standups and sprint planning meetings
+- Contributed to technical documentation and knowledge base
+
+Junior Developer | Tech Innovations Inc. | Remote | 2017 - 2018
+- Developed web applications using Python Django
+- Fixed bugs and implemented minor features
+- Learned best practices for version control with Git
+- Assisted senior developers with various projects
+
+EDUCATION
+
+Bachelor of Science in Computer Science
+University of California, Berkeley | 2013 - 2017
+- GPA: 3.6/4.0
+- Relevant coursework: Data Structures, Algorithms, Database Systems, Operating Systems
+- Senior project: Built a real-time chat application using WebSockets
+
+TECHNICAL SKILLS
+
+Programming Languages: Python, JavaScript, Java, SQL
+Frameworks: Django, Flask, React, Node.js
+Cloud & DevOps: AWS (EC2, S3, RDS), Docker, Jenkins, Git
+Databases: PostgreSQL, MySQL, MongoDB
+Tools: Jira, Confluence, Postman, VS Code
+
+PROJECTS
+
+Personal Finance Tracker | 2021
+- Built a full-stack application for tracking expenses and budgets
+- Used React frontend with Python Flask backend
+- Deployed on AWS using EC2 and RDS
+
+Open Source Contributions | 2019 - Present
+- Contributed bug fixes to popular Python libraries
+- Active participant in local developer community
+- Regular attendee at Python meetups
+
+CERTIFICATIONS
+AWS Certified Developer - Associate | 2021
+
+INTERESTS
+Technology trends, hiking, photography, contributing to open source

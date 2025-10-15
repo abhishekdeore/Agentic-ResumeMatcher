@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic Resume Matcher</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px dashed #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        input[type="file"]:hover {
+            border-color: #667eea;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-success:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Agent Activity Visualization */
+        .agent-activity {
+            display: none;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .agent-activity.active {
+            display: block;
+        }
+
+        .agent-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .agent-step.active {
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            border-left: 4px solid #667eea;
+        }
+
+        .agent-step.completed {
+            opacity: 0.7;
+        }
+
+        .agent-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.5em;
+        }
+
+        .agent-icon.loading {
+            background: #667eea;
+            animation: pulse 1.5s infinite;
+        }
+
+        .agent-icon.completed {
+            background: #28a745;
+        }
+
+        .agent-icon.pending {
+            background: #e0e0e0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .agent-details h4 {
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .agent-details p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* Analysis Results */
+        .analysis-results {
+            display: none;
+            margin-top: 40px;
+        }
+
+        .analysis-results.visible {
+            display: block;
+        }
+
+        .result-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .result-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .score-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .score {
+            font-size: 4em;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .score.low {
+            color: #dc3545;
+        }
+
+        .score.medium {
+            color: #ffc107;
+        }
+
+        .score.high {
+            color: #28a745;
+        }
+
+        .keywords-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .keywords-section h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .keyword-tag {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .keyword-tag.matched {
+            background: #28a745;
+            color: white;
+        }
+
+        .keyword-tag.missing {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .suggestions-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        .suggestions-box h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .suggestions-box ul {
+            list-style-position: inside;
+            color: #856404;
+        }
+
+        .suggestions-box li {
+            margin-bottom: 10px;
+        }
+
+        /* Improved Resume Results */
+        .improved-results {
+            display: none;
+            margin-top: 40px;
+        }
+
+        .improved-results.visible {
+            display: block;
+        }
+
+        .comparison-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .score-comparison {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        .score-box {
+            text-align: center;
+            flex: 1;
+        }
+
+        .score-box h4 {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .arrow {
+            font-size: 3em;
+            color: #28a745;
+            flex: 0;
+            padding: 0 20px;
+        }
+
+        .resume-output {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .keyword-highlight {
+            background: linear-gradient(120deg, #d4edda 0%, #c3e6cb 100%);
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 500;
+            box-shadow: 0 1px 2px rgba(40, 167, 69, 0.1);
+        }
+
+        .btn-download {
+            background: #28a745;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .btn-download:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .error.visible {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .score-comparison {
+                flex-direction: column;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+                margin: 20px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Agentic Resume Matcher</h1>
+            <p>AI-Powered Resume Analysis & Tailoring System</p>
+        </div>
+
+        <div class="content">
+            <!-- Input Form -->
+            <form id="analyzeForm">
+                <div class="form-group">
+                    <label for="jobDescription">📋 Job Description</label>
+                    <textarea
+                        id="jobDescription"
+                        name="job_description"
+                        rows="10"
+                        placeholder="Paste the job description here..."
+                        required
+                    ></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="resumeFile">📄 Upload Your Resume</label>
+                    <input
+                        type="file"
+                        id="resumeFile"
+                        name="resume_file"
+                        accept=".pdf,.docx,.txt"
+                        required
+                    >
+                    <small style="color: #666; margin-top: 5px; display: block;">
+                        Supported formats: PDF, DOCX, TXT
+                    </small>
+                </div>
+
+                <button type="submit" class="btn-primary" id="analyzeBtn">
+                    🔍 Analyze Resume Match
+                </button>
+            </form>
+
+            <!-- Agent Activity Visualization -->
+            <div class="agent-activity" id="agentActivity">
+                <h3 style="margin-bottom: 20px; color: #333;">🤖 AI Agents Working...</h3>
+
+                <div class="agent-step" id="step1">
+                    <div class="agent-icon pending" id="icon1">📄</div>
+                    <div class="agent-details">
+                        <h4>Reading Resume</h4>
+                        <p>Extracting text from your resume file</p>
+                    </div>
+                </div>
+
+                <div class="agent-step" id="step2">
+                    <div class="agent-icon pending" id="icon2">🔍</div>
+                    <div class="agent-details">
+                        <h4>Analyzing Job Description</h4>
+                        <p>KeywordExtractorAgent is identifying skills, requirements, and keywords</p>
+                    </div>
+                </div>
+
+                <div class="agent-step" id="step3">
+                    <div class="agent-icon pending" id="icon3">📊</div>
+                    <div class="agent-details">
+                        <h4>Calculating Match Score</h4>
+                        <p>ResumeTailorAgent is comparing your resume against job requirements</p>
+                    </div>
+                </div>
+
+                <div class="agent-step" id="step4">
+                    <div class="agent-icon pending" id="icon4">💡</div>
+                    <div class="agent-details">
+                        <h4>Generating Insights</h4>
+                        <p>Identifying matched keywords and missing skills</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analysis Results -->
+            <div class="analysis-results" id="analysisResults">
+                <div class="result-section">
+                    <h2>📊 Analysis Results</h2>
+
+                    <div class="score-card">
+                        <h3>Resume Match Score</h3>
+                        <div class="score" id="matchScore">--</div>
+                        <p>How well your current resume matches the job requirements</p>
+                    </div>
+
+                    <div class="keywords-section">
+                        <h3>✅ Matched Keywords (<span id="matchedCount">0</span>)</h3>
+                        <div class="keywords" id="matchedKeywords"></div>
+                    </div>
+
+                    <div class="keywords-section">
+                        <h3>⚠️ Missing Keywords (<span id="missingCount">0</span>)</h3>
+                        <div class="keywords" id="missingKeywords"></div>
+                    </div>
+
+                    <div class="suggestions-box" id="suggestionsBox" style="display: none;">
+                        <h3>💡 Recommendations</h3>
+                        <ul id="suggestionsList"></ul>
+                    </div>
+
+                    <button class="btn-success" id="improveBtn">
+                        ✨ Improve My Resume with AI
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tailoring Activity -->
+            <div class="agent-activity" id="tailoringActivity">
+                <h3 style="margin-bottom: 20px; color: #333;">✨ AI Agents Tailoring Your Resume...</h3>
+
+                <div class="agent-step" id="tailorStep1">
+                    <div class="agent-icon pending" id="tailorIcon1">🎯</div>
+                    <div class="agent-details">
+                        <h4>Analyzing Original Resume</h4>
+                        <p>Understanding your experience and achievements</p>
+                    </div>
+                </div>
+
+                <div class="agent-step" id="tailorStep2">
+                    <div class="agent-icon pending" id="tailorIcon2">🔄</div>
+                    <div class="agent-details">
+                        <h4>Optimizing Content</h4>
+                        <p>ResumeTailorAgent is rewriting content to emphasize relevant experience</p>
+                    </div>
+                </div>
+
+                <div class="agent-step" id="tailorStep3">
+                    <div class="agent-icon pending" id="tailorIcon3">🔑</div>
+                    <div class="agent-details">
+                        <h4>Incorporating Keywords</h4>
+                        <p>Adding missing keywords naturally and contextually</p>
+                    </div>
+                </div>
+
+                <div class="agent-step" id="tailorStep4">
+                    <div class="agent-icon pending" id="tailorIcon4">✅</div>
+                    <div class="agent-details">
+                        <h4>Finalizing Tailored Resume</h4>
+                        <p>Ensuring ATS compatibility and professional formatting</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Improved Resume Results -->
+            <div class="improved-results" id="improvedResults">
+                <div class="result-section">
+                    <h2>🎉 Your Tailored Resume is Ready!</h2>
+
+                    <div class="comparison-card">
+                        <h3>Match Score Improvement</h3>
+                        <div class="score-comparison">
+                            <div class="score-box">
+                                <h4>Before</h4>
+                                <div class="score" id="scoreBefore">--</div>
+                            </div>
+                            <div class="arrow">→</div>
+                            <div class="score-box">
+                                <h4>After</h4>
+                                <div class="score high" id="scoreAfter">--</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="keywords-section">
+                        <h3>✅ Keywords Added</h3>
+                        <div class="keywords" id="keywordsAdded"></div>
+                    </div>
+
+                    <div class="resume-output">
+                        <h3>📄 Tailored Resume</h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">
+                            <span class="keyword-highlight" style="display: inline;">Keywords</span> are highlighted in green throughout the resume
+                        </p>
+                        <div id="resumeContent"></div>
+                    </div>
+
+                    <button class="btn-download" onclick="downloadResume()">
+                        ⬇️ Download Tailored Resume
+                    </button>
+                </div>
+            </div>
+
+            <!-- Error Display -->
+            <div class="error" id="error"></div>
+        </div>
+    </div>
+
+    <script>
+        let analysisData = null;
+        let originalMatchScore = 0;
+
+        // Analyze Form Submission
+        document.getElementById('analyzeForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await analyzeResume();
+        });
+
+        // Improve Button Click
+        document.getElementById('improveBtn').addEventListener('click', async function() {
+            await improveResume();
+        });
+
+        async function analyzeResume() {
+            // Hide previous results
+            document.getElementById('analysisResults').classList.remove('visible');
+            document.getElementById('improvedResults').classList.remove('visible');
+            document.getElementById('error').classList.remove('visible');
+
+            // Show agent activity
+            document.getElementById('agentActivity').classList.add('active');
+            document.getElementById('analyzeBtn').disabled = true;
+
+            // Animate agent steps
+            simulateAgentActivity(['step1', 'step2', 'step3', 'step4'], ['icon1', 'icon2', 'icon3', 'icon4']);
+
+            // Prepare form data
+            const formData = new FormData();
+            formData.append('job_description', document.getElementById('jobDescription').value);
+            formData.append('resume_file', document.getElementById('resumeFile').files[0]);
+
+            try {
+                const response = await fetch('/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Analysis failed');
+                }
+
+                analysisData = data;
+                originalMatchScore = data.match_score;
+                displayAnalysisResults(data);
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('error').textContent = `Error: ${error.message}`;
+                document.getElementById('error').classList.add('visible');
+            } finally {
+                document.getElementById('agentActivity').classList.remove('active');
+                document.getElementById('analyzeBtn').disabled = false;
+            }
+        }
+
+        async function improveResume() {
+            // Hide analysis, show tailoring activity
+            document.getElementById('improvedResults').classList.remove('visible');
+            document.getElementById('tailoringActivity').classList.add('active');
+            document.getElementById('improveBtn').disabled = true;
+
+            // Animate tailoring steps
+            simulateAgentActivity(
+                ['tailorStep1', 'tailorStep2', 'tailorStep3', 'tailorStep4'],
+                ['tailorIcon1', 'tailorIcon2', 'tailorIcon3', 'tailorIcon4']
+            );
+
+            // Prepare form data
+            const formData = new FormData();
+            formData.append('job_description', document.getElementById('jobDescription').value);
+            formData.append('resume_file', document.getElementById('resumeFile').files[0]);
+            formData.append('output_format', 'markdown');
+            formData.append('calculate_score', 'true');
+
+            try {
+                const response = await fetch('/tailor', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Tailoring failed');
+                }
+
+                displayImprovedResults(data);
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('error').textContent = `Error: ${error.message}`;
+                document.getElementById('error').classList.add('visible');
+            } finally {
+                document.getElementById('tailoringActivity').classList.remove('active');
+                document.getElementById('improveBtn').disabled = false;
+            }
+        }
+
+        function simulateAgentActivity(stepIds, iconIds) {
+            stepIds.forEach((stepId, index) => {
+                setTimeout(() => {
+                    const step = document.getElementById(stepId);
+                    const icon = document.getElementById(iconIds[index]);
+
+                    step.classList.add('active');
+                    icon.classList.remove('pending');
+                    icon.classList.add('loading');
+
+                    setTimeout(() => {
+                        step.classList.remove('active');
+                        step.classList.add('completed');
+                        icon.classList.remove('loading');
+                        icon.classList.add('completed');
+                        icon.textContent = '✓';
+                    }, 1500);
+                }, index * 2000);
+            });
+        }
+
+        function displayAnalysisResults(data) {
+            // Match score
+            const score = data.match_score || 0;
+            const scoreElement = document.getElementById('matchScore');
+            scoreElement.textContent = score.toFixed(1) + '%';
+
+            if (score >= 70) {
+                scoreElement.className = 'score high';
+            } else if (score >= 50) {
+                scoreElement.className = 'score medium';
+            } else {
+                scoreElement.className = 'score low';
+            }
+
+            // Matched keywords
+            const matchedDiv = document.getElementById('matchedKeywords');
+            matchedDiv.innerHTML = '';
+            document.getElementById('matchedCount').textContent = data.matched_keywords?.length || 0;
+
+            (data.matched_keywords || []).forEach(keyword => {
+                const tag = document.createElement('span');
+                tag.className = 'keyword-tag matched';
+                tag.textContent = keyword;
+                matchedDiv.appendChild(tag);
+            });
+
+            // Missing keywords
+            const missingDiv = document.getElementById('missingKeywords');
+            missingDiv.innerHTML = '';
+            document.getElementById('missingCount').textContent = data.missing_keywords?.length || 0;
+
+            (data.missing_keywords || []).forEach(keyword => {
+                const tag = document.createElement('span');
+                tag.className = 'keyword-tag missing';
+                tag.textContent = keyword;
+                missingDiv.appendChild(tag);
+            });
+
+            // Suggestions
+            if (data.suggestions && data.suggestions.length > 0) {
+                const suggestionsList = document.getElementById('suggestionsList');
+                suggestionsList.innerHTML = '';
+                data.suggestions.forEach(suggestion => {
+                    const li = document.createElement('li');
+                    li.textContent = suggestion;
+                    suggestionsList.appendChild(li);
+                });
+                document.getElementById('suggestionsBox').style.display = 'block';
+            }
+
+            // Show results
+            document.getElementById('analysisResults').classList.add('visible');
+            document.getElementById('analysisResults').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function displayImprovedResults(data) {
+            // Before/After scores
+            document.getElementById('scoreBefore').textContent = originalMatchScore.toFixed(1) + '%';
+            document.getElementById('scoreAfter').textContent = (data.match_score || 0).toFixed(1) + '%';
+
+            // Set color for before score
+            const beforeElement = document.getElementById('scoreBefore');
+            if (originalMatchScore >= 70) {
+                beforeElement.className = 'score high';
+            } else if (originalMatchScore >= 50) {
+                beforeElement.className = 'score medium';
+            } else {
+                beforeElement.className = 'score low';
+            }
+
+            // Keywords added (comparison between matched before and after)
+            const keywordsAddedDiv = document.getElementById('keywordsAdded');
+            keywordsAddedDiv.innerHTML = '';
+
+            const newKeywords = (data.keywords_matched || []).filter(
+                kw => !analysisData.matched_keywords.includes(kw)
+            );
+
+            if (newKeywords.length > 0) {
+                newKeywords.forEach(keyword => {
+                    const tag = document.createElement('span');
+                    tag.className = 'keyword-tag matched';
+                    tag.textContent = keyword;
+                    keywordsAddedDiv.appendChild(tag);
+                });
+            } else {
+                keywordsAddedDiv.innerHTML = '<p style="color: #666;">Resume optimized with existing keywords</p>';
+            }
+
+            // Resume content with keyword highlighting
+            const resumeContent = document.getElementById('resumeContent');
+            const formattedResume = formatMarkdown(data.tailored_resume);
+            const highlightedResume = highlightKeywords(formattedResume, data.keywords_matched || []);
+            resumeContent.innerHTML = highlightedResume;
+
+            // Store for download
+            window.tailoredResume = data.tailored_resume;
+
+            // Show results
+            document.getElementById('improvedResults').classList.add('visible');
+            document.getElementById('improvedResults').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function formatMarkdown(text) {
+            let html = text;
+
+            // Headers
+            html = html.replace(/^### (.*$)/gim, '<h4>$1</h4>');
+            html = html.replace(/^## (.*$)/gim, '<h3>$1</h3>');
+            html = html.replace(/^# (.*$)/gim, '<h2>$1</h2>');
+
+            // Bold
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+            // Bullets
+            html = html.replace(/^- (.*$)/gim, '<li>$1</li>');
+            html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+
+            // Line breaks
+            html = html.replace(/\n/g, '<br>');
+
+            return html;
+        }
+
+        function highlightKeywords(htmlText, keywords) {
+            if (!keywords || keywords.length === 0) {
+                return htmlText;
+            }
+
+            let highlightedText = htmlText;
+
+            // Sort keywords by length (longest first) to avoid partial matches
+            const sortedKeywords = [...keywords].sort((a, b) => b.length - a.length);
+
+            sortedKeywords.forEach(keyword => {
+                // Create a case-insensitive regex that matches whole words
+                // Avoid matching inside HTML tags
+                const regex = new RegExp(`(?<![<>/])\\b(${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})\\b(?![^<]*>)`, 'gi');
+
+                highlightedText = highlightedText.replace(regex, '<span class="keyword-highlight">$1</span>');
+            });
+
+            return highlightedText;
+        }
+
+        function downloadResume() {
+            const blob = new Blob([window.tailoredResume], { type: 'text/markdown' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'tailored_resume.md';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>

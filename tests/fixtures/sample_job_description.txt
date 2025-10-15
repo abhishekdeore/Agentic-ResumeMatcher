@@ -1,0 +1,50 @@
+Senior Software Engineer - Cloud Infrastructure
+
+Company: TechCorp Inc.
+Location: Remote (US)
+
+About the Role:
+We're seeking an experienced Senior Software Engineer to join our Cloud Infrastructure team. You'll be responsible for designing, building, and maintaining scalable cloud-based systems that power our products used by millions of users worldwide.
+
+Required Skills:
+- 5+ years of professional software development experience
+- Strong proficiency in Python and/or Go
+- Extensive experience with AWS services (EC2, S3, Lambda, RDS, CloudFormation)
+- Expert-level knowledge of Docker and Kubernetes
+- Experience building and maintaining CI/CD pipelines (Jenkins, GitLab CI, GitHub Actions)
+- Infrastructure as Code expertise (Terraform, CloudFormation)
+- Strong understanding of networking, security, and system architecture
+- Experience with monitoring and observability tools (Datadog, Prometheus, Grafana)
+
+Soft Skills:
+- Excellent communication and collaboration abilities
+- Strong problem-solving and debugging skills
+- Ability to mentor junior engineers
+- Self-motivated and able to work independently
+- Experience working in Agile/Scrum environments
+
+Responsibilities:
+- Design and implement highly scalable cloud infrastructure solutions
+- Build and optimize CI/CD pipelines for rapid deployment
+- Ensure system reliability, performance, and security
+- Collaborate with cross-functional teams (product, design, QA)
+- Write clean, maintainable, and well-documented code
+- Participate in on-call rotation for production support
+- Mentor junior team members and conduct code reviews
+- Stay current with emerging technologies and best practices
+
+Qualifications:
+- Bachelor's degree in Computer Science or related field (or equivalent experience)
+- AWS certification (Solutions Architect or DevOps Engineer) preferred
+- Experience with microservices architecture
+- Knowledge of security best practices and compliance requirements
+
+Nice to Have:
+- Experience with other cloud providers (Azure, GCP)
+- Background in Site Reliability Engineering (SRE)
+- Contributions to open-source projects
+- Experience with GraphQL APIs
+- Familiarity with Machine Learning infrastructure
+
+Company Culture:
+We value innovation, collaboration, and continuous learning. Our team is fast-paced, supportive, and committed to delivering high-quality solutions. We offer competitive compensation, comprehensive benefits, and opportunities for professional growth.
