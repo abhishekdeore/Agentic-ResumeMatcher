@@ -7,7 +7,7 @@
 
 A production-ready application that uses multi-agent AI architecture to intelligently analyze and tailor resumes to specific job descriptions. Get instant match scores, keyword analysis, and AI-optimized resumes that pass ATS (Applicant Tracking Systems).
 
-![Demo](https://via.placeholder.com/800x400?text=Agentic+Resume+Matcher+Demo)
+Preview : <img width="1919" height="826" alt="image" src="https://github.com/user-attachments/assets/9b1a8b8d-6888-43f8-927e-c5579ae907d8" />
 
 ## ✨ Key Features
 
